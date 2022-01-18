@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <h4>Información basica de la plantilla</h4>
+        <h4>Información basica de la plantilla, ahora conectado a Git</h4>
         <div class="column">
             <div class="col">
                 <div class="row q-pa-sm q-gutter-md">
