@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <h4>Información basica de la plantilla, ahora conectado a Git</h4>
+        <h4>Información basica de la plantilla</h4>
         <div class="column">
             <div class="col">
                 <div class="row q-pa-sm q-gutter-md">
@@ -914,6 +914,32 @@
                 </div>
             </div>
         </div> 
+        <div class="column">
+            <div class="col">
+                <div class="row q-pa-sm q-gutter-md">
+                    <div class="col-12">
+                        <label class="text-bold">Tabla en forma de tarjetas por cada fila</label><br>
+                        <q-table
+                            grid
+                            title="Treats"
+                            :rows="rows"
+                            :columns="columns"
+                            row-key="name"
+                            :filter="filter"
+                            hide-header
+                            >
+                            <template v-slot:top-right>
+                                <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+                                <template v-slot:append>
+                                    <q-icon name="search" />
+                                </template>
+                                </q-input>
+                            </template>
+                        </q-table>
+                    </div>  
+                </div>
+            </div>
+        </div>
         <h4>Paginación</h4>
         <div class="column">
             <div class="col">
