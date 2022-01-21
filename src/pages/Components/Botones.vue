@@ -1267,6 +1267,7 @@
 <script>
 import { defineComponent, ref, computed, onBeforeUnmount} from 'vue'
 import { exportFile, useQuasar,QStepperNavigation, Notify, QStepper } from 'quasar'
+import {api} from '../../boot/axios.js'
 
 
 
@@ -1345,6 +1346,7 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         let timer
+
         const submitting = ref(false)       
         const text = ref("")
         const textB = ref('')
@@ -1365,7 +1367,12 @@ export default defineComponent({
         const nameRef = ref(null)
         const age = ref(null)
         const ageRef = ref(null)
-        const accept = ref(false)         
+        const accept = ref(false)    
+        const pruebaapi = async () =>{
+                    const resp = await api.get(`/Areas/1`)
+                    console.log(resp)    
+                } 
+        pruebaapi()    
         const pagination = ref({
             page: 1,
             rowsPerPage: 10,
@@ -1382,6 +1389,7 @@ export default defineComponent({
         return {
             eleccion: ref('opc1'),
             multiple: ref([]),
+            
             submitting,
             columns,
             columns2,
@@ -1551,8 +1559,12 @@ export default defineComponent({
                 message: 'Esta es una notificación tipo "Positiva".',
                 position: 'top-right',
                 progress: true,
+                
 
                 })
+
+                
+                
             },
 
             triggerNegative () {
