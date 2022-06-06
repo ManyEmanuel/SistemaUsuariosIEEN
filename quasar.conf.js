@@ -87,7 +87,7 @@ module.exports = configure(function (ctx) {
     framework: {
       config: {
         notify:{},
-        Loading:{}
+        Loading:{},
       },
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -107,7 +107,11 @@ module.exports = configure(function (ctx) {
       // Quasar plugins
       plugins: [
         'Notify',
-        'Loading'
+        'Loading',
+        'Dialog',
+        'LocalStorage',
+        'SessionStorage',
+        'Cookies'
       ]
     },
 

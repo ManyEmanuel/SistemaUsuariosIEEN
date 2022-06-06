@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 
 // import example from './module-example'
 
+import auth from './auth'
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -15,6 +16,7 @@ import { createStore } from 'vuex'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
+      auth
       // example
     },
 

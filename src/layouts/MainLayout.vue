@@ -3,7 +3,7 @@
     <q-header elevated style="background-color: rgb(103,62,132)">
       <q-toolbar>
         <q-btn
-          flat       
+          flat
           round
           dense
           icon="menu"
@@ -11,10 +11,10 @@
           @click="drawer = !drawer"
         />
         <q-toolbar-title>
-          Plantilla IEEN
+          Sistema de Usuarios
         </q-toolbar-title>
 
-        <div><q-btn flat label="Cerrar Sesión" text-color="white" /></div>
+        <div><q-btn flat label="Cerrar Sesión" text-color="white" @click="LogOut()" /></div>
       </q-toolbar>
     </q-header>
     <q-footer elevated class="bg-purple-ieen">
@@ -27,8 +27,8 @@
       v-model="drawer"
       show-if-above
       :width="250"
-      :breakpoint="400"  
-      class="text-black"    
+      :breakpoint="1024"
+      class="text-black"
     >
 
       <q-scroll-area style="height: calc(100% - 130px); margin-top: 130px; border-right: 1px solid #ddd">
@@ -37,7 +37,7 @@
             v-for="link in essentialLinks"
             :key="link.title"
             v-bind="link"
-          />     
+          />
         </q-list>
       </q-scroll-area>
       <q-img class="absolute-top" src="~assets/Fondo.png" style="height: 130px" >
@@ -45,7 +45,7 @@
             <q-avatar size="56px" class="q-mb-sm">
               <img src="~assets/usuario.png">
             </q-avatar>
-            <div class="text-weight-bold  text-black">Nombre Usuario</div>
+            <div class="text-weight-bold  text-black">{{$q.localStorage.getItem("user")}}</div>
             <div class=" text-black">Puesto en IEEN </div>
           </div>
         </q-img>
@@ -123,30 +123,24 @@
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
-  
+
  {
-    title: 'Componentes',
-    icon: 'grid_view',
-    link: {name:'botones'}
+    title: 'CATÁLOGOS PRINCIPALES',
+    icon: 'menu_book',
+    link: {name:'CatalogosPrincipal'}
   },
   {
-    title: 'Colores',
-    icon: 'palette',
-    link: {name:'colores'}
+    title: 'CATÁLOGOS DE PERMISOS',
+    icon: 'menu_book',
+    link: {name:'CatalogosPermisos'}
   },
-  {
-    title: 'Ejemplo 1',
-    icon: 'looks_one',
-    link: {name:'ejemplo1'}
-  },
-  {
-    title: 'Ejemplo 2',
-    icon: 'looks_two',
-    link: {name:'ejemplo2'}
-  },
+
 ]
 import { defineComponent, ref } from 'vue'
-
+import {api} from 'src/boot/axios.js'
+import { useQuasar, Cookies } from 'quasar'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'MainLayout',
 
@@ -155,15 +149,67 @@ export default defineComponent({
   },
 
   setup () {
+    const $q = useQuasar()
+    const store = useStore()
+    const router = useRouter()
+    //const valores = window.location.search
+    //const urlParams = new URLSearchParams(valores)
+    //const token = urlParams.get('token')
+    //const sistema = urlParams.get('sistema')
+    //$q.localStorage.set("token", token)
+    //$q.localStorage.set("sistema", sistema)
     const leftDrawerOpen = ref(false)
+
+    const Permisos = async()=>{
+    const {success} =  await store.dispatch('auth/GeneraPermisos')
+    console.log(success)
+    }
+    Permisos()
+    const LogOut = async () => {
+      $q.dialog({
+        title: '¿Que acción desea realizar?',
+        icon: 'Warning',
+        ok:{
+          color: 'purple-6',
+          label: 'Cerrar sesión'
+        },
+        cancel:{
+          color: 'purple-6',
+          label: 'Ir a universo IEEN'
+        },
+        persistent: true
+      }).onOk(() => {
+        $q.localStorage.remove("token")
+        window.location = "http://192.168.0.134:8081?return=false"
+      })
+      .onCancel(()=>{
+        window.location = "http://192.168.0.134:8081?return=true"
+      })
+
+
+
+      /*const exit = await store.dispatch('auth/signOut')
+      console.log(exit.success)
+      setTimeout(() => {
+            router.push({ name: 'auth' })
+      }, 200);
+      $q.notify({
+            type: 'negative',
+            message: exit.data
+        })
+*/
+
+
+    }
     return {
       leftDrawerOpen,
       essentialLinks: linksList,
        drawer: ref(false),
        miniState: ref(false),
+       LogOut,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-        
+
       }
     }
   }
